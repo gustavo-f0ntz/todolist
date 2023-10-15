@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,4 +54,14 @@ public class TaskController {
         return tasks;
     }
 }
+
+    // para passar o endereço da task e o Id
+    @PutMapping("/{id}")
+    public TaskModel update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
+        var idUser = request.getAttribute("idUser");
+        System.out.println("IDUSER" + idUser);
+        taskModel.setIdUser((UUID)idUser);
+        taskModel.setId(id);
+        return this.taskRepository.save(taskModel);
+    }
 }
